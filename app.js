@@ -136,6 +136,7 @@ app.get("/customers/:grade", (req, res) => {
  *               id:
  *                 type: string
  *                 maxLength: 4
+ *                 minLength: 4
  *               name:
  *                 type: string
  *               grade:
@@ -163,6 +164,7 @@ app.post("/customers", jsonParser, (req, res) => {
 	//Sanitizing/Validating input
 	if (
 		!req.body.id ||
+		req.body.id.length != 4 ||
 		!req.body.name ||
 		!req.body.city ||
 		!req.body.phone ||
