@@ -134,6 +134,8 @@ app.get("/customers/:grade", (req, res) => {
  *           schema:
  *             type: object
  *             properties:
+ * 			     id:
+ * 			       type: string
  *               name:
  *                 type: string
  *               grade:
@@ -143,6 +145,7 @@ app.get("/customers/:grade", (req, res) => {
  *               phone:
  *                 type: string
  *             required:
+ * 			     - id
  *               - name
  *               - grade
  *               - city
@@ -159,6 +162,7 @@ app.post("/customers", jsonParser, (req, res) => {
 	console.log(JSON.stringify(req.body));
 	//Sanitizing/Validating input
 	if (
+		!req.body.id ||
 		!req.body.name ||
 		!req.body.city ||
 		!req.body.phone ||
@@ -173,8 +177,8 @@ app.post("/customers", jsonParser, (req, res) => {
 		.then((conn) => {
 			conn
 				.query(
-					"INSERT INTO customer (CUST_NAME, GRADE, PHONE_NO, CUST_CITY) VALUES (?, ?, ?, ?)",
-					[req.body.name, req.body.grade, req.body.phone, req.body.city]
+					"INSERT INTO customer (CUST_CODE, CUST_NAME, GRADE, PHONE_NO, CUST_CITY) VALUES (?, ?, ?, ?, ?)",
+					[req.body.id, req.body.name, req.body.grade, req.body.phone, req.body.city]
 				)
 				.then((rows) => {
 					res.set("Content-Type", "application/json");
