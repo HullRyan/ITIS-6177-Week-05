@@ -161,7 +161,7 @@ app.post("/customers", jsonParser, (req, res) => {
 	if (
 		!req.body.name ||
 		!req.body.grade ||
-		!req.body.address ||
+		!req.body.city ||
 		!req.body.phone
 	) {
 		res.status(400).send("Invalid input");
