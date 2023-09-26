@@ -2,7 +2,6 @@ const express = require("express");
 
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const cors = require("cors");
 
 const options = {
 	definition: {
