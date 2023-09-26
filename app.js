@@ -171,16 +171,25 @@ app.post("/customers", jsonParser, (req, res) => {
 		return;
 	}
 
+	id = "C" + req.body.id;
+	// console.log(id);
 	pool
 		.getConnection()
 		.then((conn) => {
-			conn
-				.query(
-					"INSERT INTO customer (CUST_CODE, CUST_NAME, GRADE, PHONE_NO, CUST_CITY) VALUES (?, ?, ?, ?, ?)",
+			conn.query("SELECT * FROM customer WHERE CUST_CODE = ?", [id]).then((rows) => {
+				if (rows.length > 0) {
+					res.status(400).send("Customer already exists");
+					conn.release();
+					return;
+				} else {
+					conn
+						.query(
+							"INSERT INTO customer (CUST_CODE, CUST_NAME, GRADE, PHONE_NO, CUST_CITY) VALUES (?, ?, ?, ?, ?)",
 					[req.body.id, req.body.name, req.body.grade, req.body.phone, req.body.city]
 				)
 				.then((rows) => {
 					res.set("Content-Type", "application/json");
+					rows["id"] = id;
 					res.json(rows);
 					conn.release();
 				})
@@ -193,6 +202,8 @@ app.post("/customers", jsonParser, (req, res) => {
 			throw err;
 		});
 });
+
+
 
 
 
