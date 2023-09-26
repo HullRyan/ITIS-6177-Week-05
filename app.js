@@ -122,6 +122,7 @@ app.get("/customers/:grade", (req, res) => {
 });
 
 /**
+/**
  * @swagger
  * /customers:
  *   post:
@@ -212,59 +213,15 @@ app.post("/customers", jsonParser, (req, res) => {
 	});
 });
 
-//patch
-app.patch("/customers/:id", jsonParser, (req, res) => {
-	console.log(JSON.stringify(req.body));
-	//Sanitizing/Validating input
-	if (
-		!req.body.name ||
-		!req.body.city ||
-		!req.body.phone ||
-		req.body.grade == undefined
-	) {
-		res.status(400).send("Invalid input");
-		return;
-	}
-
-	pool.getConnection().then((conn) => {
-		conn
-			.query("SELECT * FROM customer WHERE CUST_CODE = ?", [req.params.id])
-			.then((rows) => {
-				if (rows.length == 0) {
-					res.status(400).send("Customer does not exist");
-					conn.release();
-					return;
-				} else {
-					conn
-						.query(
-							"UPDATE customer SET CUST_NAME = ?, GRADE = ?, PHONE_NO = ?, CUST_CITY = ? WHERE CUST_CODE = ?",
-							[req.body.name, req.body.grade, req.body.phone, req.body.city, req.params.id]
-						)
-						.then((rows) => {
-							res.set("Content-Type", "application/json");
-							res.json(rows);
-							conn.release();
-						})
-						.catch((err) => {
-							conn.release();
-							throw err;
-						});
-				}
-			});
-	});
-});
-
-//delete
 /**
  * @swagger
  * /customers/{id}:
  *   delete:
  *     description: Delete a customer
- *    parameters:	
+ *     parameters:
  * 	 - name: id
- * 	 description: Customer ID
- *
- *    responses:
+ * 	   description: Customer ID
+ *     responses:
  * 	 200:
  * 	   description: Success
  * 	 500:
@@ -362,6 +319,54 @@ app.get("/orders", (req, res) => {
 		.catch((err) => {
 			throw err;
 		});
+});
+
+//patch
+app.patch("/customers/:id", jsonParser, (req, res) => {
+	console.log(JSON.stringify(req.body));
+	//Sanitizing/Validating input
+	if (
+		!req.body.name ||
+		!req.body.city ||
+		!req.body.phone ||
+		req.body.grade == undefined
+	) {
+		res.status(400).send("Invalid input");
+		return;
+	}
+
+	pool.getConnection().then((conn) => {
+		conn
+			.query("SELECT * FROM customer WHERE CUST_CODE = ?", [req.params.id])
+			.then((rows) => {
+				if (rows.length == 0) {
+					res.status(400).send("Customer does not exist");
+					conn.release();
+					return;
+				} else {
+					conn
+						.query(
+							"UPDATE customer SET CUST_NAME = ?, GRADE = ?, PHONE_NO = ?, CUST_CITY = ? WHERE CUST_CODE = ?",
+							[
+								req.body.name,
+								req.body.grade,
+								req.body.phone,
+								req.body.city,
+								req.params.id,
+							]
+						)
+						.then((rows) => {
+							res.set("Content-Type", "application/json");
+							res.json(rows);
+							conn.release();
+						})
+						.catch((err) => {
+							conn.release();
+							throw err;
+						});
+				}
+			});
+	});
 });
 
 app.listen(port, () => {
