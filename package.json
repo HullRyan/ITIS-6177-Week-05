@@ -1,0 +1,30 @@
+{
+  "name": "itis-6177-week-05",
+  "version": "1.0.0",
+  "description": "Module 5 assignment repo",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HullRyan/ITIS-6177-Week-01.git"
+  },
+  "keywords": [
+    "nodejs",
+    "node",
+    "express"
+  ],
+  "author": "Ryan Hull",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HullRyan/ITIS-6177-Week-05/issues"
+  },
+  "homepage": "https://github.com/HullRyan/ITIS-6177-Week-05#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-jsdoc-swagger": "^1.8.0",
+    "mariadb": "^2.3.1",
+    "swagger-jsdoc": "^6.2.8"
+  }
+}
