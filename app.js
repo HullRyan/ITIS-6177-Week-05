@@ -185,7 +185,7 @@ app.post("/customers", jsonParser, (req, res) => {
 					conn
 						.query(
 							"INSERT INTO customer (CUST_CODE, CUST_NAME, GRADE, PHONE_NO, CUST_CITY) VALUES (?, ?, ?, ?, ?)",
-							[req.body.id, req.body.name, req.body.grade, req.body.phone, req.body.city]
+							[id, req.body.name, req.body.grade, req.body.phone, req.body.city]
 						)
 						.then((rows) => {
 							res.set("Content-Type", "application/json");
