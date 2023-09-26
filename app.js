@@ -3,6 +3,8 @@ const express = require("express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const cors = require("cors");
+const bodyParser = require('body-parser')
+const mariadb = require("mariadb");
 
 const options = {
 	definition: {
@@ -19,12 +21,11 @@ const options = {
 	apis: ["./app.js"],
 };
 
-const specs = swaggerJsDoc(options);
-
 const app = express();
 const port = 3002;
+const jsonParser = bodyParser.json()
+const specs = swaggerJsDoc(options);
 
-const mariadb = require("mariadb");
 const pool = mariadb.createPool({
 	host: "localhost",
 	user: "root",
@@ -154,7 +155,7 @@ app.get("/customers/:grade", (req, res) => {
  *       400:
  *         description: Invalid input
  */
-app.post("/customers", (req, res) => {
+app.post("/customers", jsonParser, (req, res) => {
 	console.log(JSON.stringify(req.body));
 	//Sanitizing/Validating input
 	if (
