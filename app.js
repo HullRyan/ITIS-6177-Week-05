@@ -137,14 +137,14 @@ app.get("/customers/:grade", (req, res) => {
  *                 type: string
  *               grade:
  *                 type: integer
- *               address:
+ *               city:
  *                 type: string
  *               phone:
  *                 type: string
  *             required:
  *               - name
  *               - grade
- *               - address
+ *               - city
  *               - phone
  *     responses:
  *       200:
@@ -172,8 +172,8 @@ app.post("/customers", (req, res) => {
 		.then((conn) => {
 			conn
 				.query(
-					"INSERT INTO customer (name, grade, address, phone) VALUES (?, ?, ?, ?)",
-					[req.body.name, req.body.grade, req.body.address, req.body.phone]
+					"INSERT INTO customer (CUST_NAME, GRADE, PHONE_NO, CUST_CITY) VALUES (?, ?, ?, ?)",
+					[req.body.name, req.body.grade, req.body.phone, req.body.city]
 				)
 				.then((rows) => {
 					res.set("Content-Type", "application/json");
