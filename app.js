@@ -134,8 +134,8 @@ app.get("/customers/:grade", (req, res) => {
  *           schema:
  *             type: object
  *             properties:
- * 			     id:
- * 			       type: string
+ *               id:
+ *                 type: string
  *               name:
  *                 type: string
  *               grade:
