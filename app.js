@@ -121,7 +121,6 @@ app.get("/customers/:grade", (req, res) => {
 		});
 });
 
-// create a new customer
 /**
  * @swagger
  * /customers:
@@ -145,7 +144,7 @@ app.get("/customers/:grade", (req, res) => {
  *               phone:
  *                 type: string
  *             required:
- * 			     - id
+ *               - id
  *               - name
  *               - grade
  *               - city
