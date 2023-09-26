@@ -185,21 +185,20 @@ app.post("/customers", jsonParser, (req, res) => {
 					conn
 						.query(
 							"INSERT INTO customer (CUST_CODE, CUST_NAME, GRADE, PHONE_NO, CUST_CITY) VALUES (?, ?, ?, ?, ?)",
-					[req.body.id, req.body.name, req.body.grade, req.body.phone, req.body.city]
-				)
-				.then((rows) => {
-					res.set("Content-Type", "application/json");
-					rows["id"] = id;
-					res.json(rows);
-					conn.release();
-				})
-				.catch((err) => {
-					conn.release();
-					throw err;
-				});
-		})
-		.catch((err) => {
-			throw err;
+							[req.body.id, req.body.name, req.body.grade, req.body.phone, req.body.city]
+						)
+						.then((rows) => {
+							res.set("Content-Type", "application/json");
+							rows["id"] = id;
+							res.json(rows);
+							conn.release();
+						})
+						.catch((err) => {
+							conn.release();
+							throw err;
+						});
+				}
+			});
 		});
 });
 
