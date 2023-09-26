@@ -33,8 +33,6 @@ const pool = mariadb.createPool({
 	connectionLimit: 5,
 });
 
-app.use(cors());
-
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 /**
