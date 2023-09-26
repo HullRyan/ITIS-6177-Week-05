@@ -90,6 +90,17 @@ app.get("/customers", (req, res) => {
  */
 app.get("/customers/:grade", (req, res) => {
 	console.log(JSON.stringify(req.params));
+	//Sanitizing/Validating input
+	if (isNaN(req.params.grade)) {
+		res.status(400).send("Invalid input");
+		return;
+	} else if (req.params.grade < 1 || req.params.grade > 5) {
+		res.status(400).send("Invalid input");
+		return;
+	} else {
+		req.params.grade = parseInt(req.params.grade);
+	}
+
 	pool
 		.getConnection()
 		.then((conn) => {
