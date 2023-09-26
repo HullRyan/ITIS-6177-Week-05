@@ -162,7 +162,7 @@ app.post("/customers", jsonParser, (req, res) => {
 		!req.body.name ||
 		!req.body.city ||
 		!req.body.phone ||
-		(req.body.grade == undefiend)
+		(req.body.grade == undefined)
 	) {
 		res.status(400).send("Invalid input");
 		return;
