@@ -135,6 +135,7 @@ app.get("/customers/:grade", (req, res) => {
  *             properties:
  *               id:
  *                 type: string
+ *                 maxLength: 4
  *               name:
  *                 type: string
  *               grade:
