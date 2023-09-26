@@ -41,13 +41,13 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 /**
  * @swagger
  * /customers:
- *    get:
- *      description: Get all customers
- *    responses:
- *      200:
- *        description: Success
- *      500:
- *        description: Internal Server Error
+ *   get:
+ *     description: Get all customers
+ *     responses:
+ *       200:
+ *         description: Success
+ *       500:
+ *         description: Internal Server Error
  *
  */
 app.get("/customers", (req, res) => {
@@ -74,21 +74,21 @@ app.get("/customers", (req, res) => {
 /**
  * @swagger
  * /customers/{grade}:
- *    get:
- *      description: Get all customers by grade
- *      parameters:
- *         -  name: grade
- *            description: grade
- *            in: path
- *            required: true
- *            type: integer
- *      responses:
- *        200:
- *          description: Success
- *        500:
- *          description: Internal Server Error
- *        400:
- *          description: Invalid input
+ *   get:
+ *     description: Get all customers by grade
+ *     parameters:
+ *       - name: grade
+ *         description: grade
+ *         in: path
+ *         required: true
+ *         type: integer
+ *     responses:
+ *       200:
+ *         description: Success
+ *       500:
+ *         description: Internal Server Error
+ *       400:
+ *         description: Invalid input
  */
 app.get("/customers/:grade", (req, res) => {
 	console.log(JSON.stringify(req.params));
@@ -123,13 +123,13 @@ app.get("/customers/:grade", (req, res) => {
 /**
  * @swagger
  * /agents:
- *    get:
- *      description: Get all agents
- *      responses:
- *        200:
- *          description: Success
- *        500:
- *          description: Internal Server Error
+ *   get:
+ *     description: Get all agents
+ *     responses:
+ *       200:
+ *         description: Success
+ *       500:
+ *         description: Internal Server Error
  */
 app.get("/agents", (req, res) => {
 	pool
@@ -155,13 +155,13 @@ app.get("/agents", (req, res) => {
 /**
  * @swagger
  * /orders:
- *    get:
- *      description: Get all orders
- *      responses:
- *        200:
- *          description: Success
- *        500:
- *          description: Internal Server Error
+ *   get:
+ *     description: Get all orders
+ *     responses:
+ *       200:
+ *         description: Success
+ *       500:
+ *         description: Internal Server Error
  */
 app.get("/orders", (req, res) => {
 	pool
