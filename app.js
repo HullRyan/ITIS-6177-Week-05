@@ -85,8 +85,8 @@ app.get("/customers", (req, res) => {
  *      responses:
  *        200:
  *          description: Success
- * 		  400:
- * 			description: Invalid input
+ * 	      400:
+ *          description: Invalid input
  *        500:
  *          description: Internal Server Error
  */
