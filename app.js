@@ -3,7 +3,7 @@ const express = require("express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const cors = require("cors");
-const bodyParser = require('body-parser')
+const bodyParser = require("body-parser");
 const mariadb = require("mariadb");
 
 const options = {
@@ -23,7 +23,7 @@ const options = {
 
 const app = express();
 const port = 3002;
-const jsonParser = bodyParser.json()
+const jsonParser = bodyParser.json();
 const specs = swaggerJsDoc(options);
 
 const pool = mariadb.createPool({
@@ -168,7 +168,7 @@ app.post("/customers", jsonParser, (req, res) => {
 		!req.body.name ||
 		!req.body.city ||
 		!req.body.phone ||
-		(req.body.grade == undefined)
+		req.body.grade == undefined
 	) {
 		res.status(400).send("Invalid input");
 		return;
@@ -176,10 +176,10 @@ app.post("/customers", jsonParser, (req, res) => {
 
 	id = "C" + req.body.id;
 	// console.log(id);
-	pool
-		.getConnection()
-		.then((conn) => {
-			conn.query("SELECT * FROM customer WHERE CUST_CODE = ?", [id]).then((rows) => {
+	pool.getConnection().then((conn) => {
+		conn
+			.query("SELECT * FROM customer WHERE CUST_CODE = ?", [id])
+			.then((rows) => {
 				if (rows.length > 0) {
 					res.status(400).send("Customer already exists");
 					conn.release();
@@ -202,12 +202,96 @@ app.post("/customers", jsonParser, (req, res) => {
 						});
 				}
 			});
-		});
+	});
 });
 
+//patch
+app.patch("/customers/:id", jsonParser, (req, res) => {
+	console.log(JSON.stringify(req.body));
+	//Sanitizing/Validating input
+	if (
+		!req.body.name ||
+		!req.body.city ||
+		!req.body.phone ||
+		req.body.grade == undefined
+	) {
+		res.status(400).send("Invalid input");
+		return;
+	}
 
+	pool.getConnection().then((conn) => {
+		conn
+			.query("SELECT * FROM customer WHERE CUST_CODE = ?", [req.params.id])
+			.then((rows) => {
+				if (rows.length == 0) {
+					res.status(400).send("Customer does not exist");
+					conn.release();
+					return;
+				} else {
+					conn
+						.query(
+							"UPDATE customer SET CUST_NAME = ?, GRADE = ?, PHONE_NO = ?, CUST_CITY = ? WHERE CUST_CODE = ?",
+							[req.body.name, req.body.grade, req.body.phone, req.body.city, req.params.id]
+						)
+						.then((rows) => {
+							res.set("Content-Type", "application/json");
+							res.json(rows);
+							conn.release();
+						})
+						.catch((err) => {
+							conn.release();
+							throw err;
+						});
+				}
+			});
+	});
+});
 
-
+//delete
+/**
+ * @swagger
+ * /customers/{id}:
+ *   delete:
+ *     description: Delete a customer
+ *    parameters:	
+ * 	 - name: id
+ * 	 description: Customer ID
+ *
+ *    responses:
+ * 	 200:
+ * 	   description: Success
+ * 	 500:
+ * 	   description: Internal Server Error
+ * 	 400:
+ * 	   description: Invalid input
+ * 	 404:
+ * 	   description: Customer does not exist
+ */
+app.delete("/customers/:id", (req, res) => {
+	pool.getConnection().then((conn) => {
+		conn
+			.query("SELECT * FROM customer WHERE CUST_CODE = ?", [req.params.id])
+			.then((rows) => {
+				if (rows.length == 0) {
+					res.status(400).send("Customer does not exist");
+					conn.release();
+					return;
+				} else {
+					conn
+						.query("DELETE FROM customer WHERE CUST_CODE = ?", [req.params.id])
+						.then((rows) => {
+							res.set("Content-Type", "application/json");
+							res.json(rows);
+							conn.release();
+						})
+						.catch((err) => {
+							conn.release();
+							throw err;
+						});
+				}
+			});
+	});
+});
 
 /**
  * @swagger
