@@ -2,6 +2,7 @@ const express = require("express");
 
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const cors = require("cors");
 
 const options = {
 	definition: {
@@ -32,6 +33,8 @@ const pool = mariadb.createPool({
 	port: 3306,
 	connectionLimit: 5,
 });
+
+app.use(cors());
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
