@@ -85,16 +85,15 @@ app.get("/customers", (req, res) => {
  *      responses:
  *        200:
  *          description: Success
+ * 		  400:
+ * 			description: Invalid input
  *        500:
  *          description: Internal Server Error
  */
 app.get("/customers/:grade", (req, res) => {
 	console.log(JSON.stringify(req.params));
 	//Sanitizing/Validating input
-	if (isNaN(req.params.grade)) {
-		res.status(400).send("Invalid input");
-		return;
-	} else if (req.params.grade < 1 || req.params.grade > 5) {
+	if (isNaN(req.params.grade) || req.params.grade < 1 || req.params.grade > 5) {
 		res.status(400).send("Invalid input");
 		return;
 	} else {
