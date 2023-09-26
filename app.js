@@ -85,10 +85,10 @@ app.get("/customers", (req, res) => {
  *      responses:
  *        200:
  *          description: Success
- * 	      400:
- *          description: Invalid input
  *        500:
  *          description: Internal Server Error
+ *        400:
+ *          description: Invalid input
  */
 app.get("/customers/:grade", (req, res) => {
 	console.log(JSON.stringify(req.params));
