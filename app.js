@@ -160,9 +160,9 @@ app.post("/customers", jsonParser, (req, res) => {
 	//Sanitizing/Validating input
 	if (
 		!req.body.name ||
-		!req.body.grade ||
 		!req.body.city ||
-		!req.body.phone
+		!req.body.phone ||
+		(req.body.grade == undefiend)
 	) {
 		res.status(400).send("Invalid input");
 		return;
