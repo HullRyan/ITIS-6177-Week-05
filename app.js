@@ -14,7 +14,7 @@ const options = {
 				"A simple Express Library API, for ITIS 6177 Week 05 Assignment/Quiz",
 		},
 		host: "localhost:3002",
-		basePath: "/",
+		basePath: "./",
 	},
 	apis: ["./index.js"],
 };
