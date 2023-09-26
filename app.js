@@ -120,6 +120,78 @@ app.get("/customers/:grade", (req, res) => {
 		});
 });
 
+// create a new customer
+/**
+ * @swagger
+ * /customers:
+ *   post:
+ *     description: Create a new customer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               grade:
+ *                 type: integer
+ *               address:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *             required:
+ *               - name
+ *               - grade
+ *               - address
+ *               - phone
+ *     responses:
+ *       200:
+ *         description: Success
+ *       500:
+ *         description: Internal Server Error
+ *       400:
+ *         description: Invalid input
+ */
+app.post("/customers", (req, res) => {
+	console.log(JSON.stringify(req.body));
+	//Sanitizing/Validating input
+	if (
+		!req.body.name ||
+		!req.body.grade ||
+		!req.body.address ||
+		!req.body.phone
+	) {
+		res.status(400).send("Invalid input");
+		return;
+	}
+
+	pool
+		.getConnection()
+		.then((conn) => {
+			conn
+				.query(
+					"INSERT INTO customer (name, grade, address, phone) VALUES (?, ?, ?, ?)",
+					[req.body.name, req.body.grade, req.body.address, req.body.phone]
+				)
+				.then((rows) => {
+					res.set("Content-Type", "application/json");
+					res.json(rows);
+					conn.release();
+				})
+				.catch((err) => {
+					conn.release();
+					throw err;
+				});
+		})
+		.catch((err) => {
+			throw err;
+		});
+});
+
+
+
 /**
  * @swagger
  * /agents:
