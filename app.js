@@ -74,7 +74,7 @@ app.get("/customers", (req, res) => {
 
 /**
  * @swagger
- * /customers/{grade}:
+ * /customers/grade/{grade}:
  *   get:
  *     description: Get all customers by grade
  *     parameters:
@@ -91,7 +91,7 @@ app.get("/customers", (req, res) => {
  *       400:
  *         description: Invalid input
  */
-app.get("/customers/:grade", (req, res) => {
+app.get("/customers/grade/:grade", (req, res) => {
 	console.log(JSON.stringify(req.params));
 	//Sanitizing/Validating input
 	if (isNaN(req.params.grade) || req.params.grade < 1 || req.params.grade > 5) {
