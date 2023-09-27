@@ -247,6 +247,9 @@ app.delete("/customers/:id", (req, res) => {
 	});
 });
 
+//put
+app
+
 /**
  * @swagger
  * /agents:
@@ -311,11 +314,11 @@ app.get("/orders", (req, res) => {
 		});
 });
 
-//patch
+//put
 /**
  * @swagger
  * /customers/{id}:
- *   patch:
+ *   put:
  *     description: Update a customer
  *     parameters:
  *       - name: id
@@ -350,6 +353,90 @@ app.get("/orders", (req, res) => {
  *       404:
  *         description: Customer does not exist
  */
+app.put("/customers/:id", jsonParser, (req, res) => {
+	console.log(JSON.stringify(req.body));
+	//Sanitizing/Validating input
+	if (
+		!req.body.name ||
+		!req.body.city ||
+		!req.body.phone ||
+		req.body.grade == undefined ||
+		req.params.id.length != 4 ||
+		req.body.grade < 1 ||
+		req.body.grade > 5
+	) {
+		res.status(400).send("Invalid input");
+		return;
+	}
+
+	pool.getConnection().then((conn) => {
+		conn
+			.query("SELECT * FROM customer WHERE CUST_CODE = ?", [req.params.id])
+			.then((rows) => {
+				if (rows.length == 0) {
+					res.status(400).send("Customer does not exist");
+					conn.release();
+					return;
+				} else {
+					conn
+						.query(
+							"UPDATE customer SET CUST_NAME = ?, GRADE = ?, PHONE_NO = ?, CUST_CITY = ? WHERE CUST_CODE = ?",
+							[
+								req.body.name,
+								req.body.grade,
+								req.body.phone,
+								req.body.city,
+								req.params.id,
+							]
+						)
+						.then((rows) => {
+							res.set("Content-Type", "application/json");
+							res.json(rows);
+							conn.release();
+						})
+						.catch((err) => {
+							conn.release();
+							throw err;
+						});
+				}
+			});
+	});
+});
+
+//patch
+/**
+ * @swagger
+ * /customers/{id}:
+ *   patch:
+ *     description: Update a customer
+ *     parameters:
+ *       - name: id
+ *         description: Customer ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               grade:
+ *                 type: integer
+ *               city:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Success
+ *       500:
+ *         description: Internal Server Error
+ *       400:
+ *         description: Invalid input
+ *       404:
+ *         description: Customer does not exist
+ */
 app.patch("/customers/:id", jsonParser, (req, res) => {
 	console.log(JSON.stringify(req.body));
 	//Sanitizing/Validating input
@@ -357,7 +444,10 @@ app.patch("/customers/:id", jsonParser, (req, res) => {
 		!req.body.name ||
 		!req.body.city ||
 		!req.body.phone ||
-		req.body.grade == undefined
+		req.body.grade == undefined ||
+		req.params.id.length != 4 ||
+		req.body.grade < 1 ||
+		req.body.grade > 5
 	) {
 		res.status(400).send("Invalid input");
 		return;
