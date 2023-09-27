@@ -83,6 +83,8 @@ app.get("/customers", (req, res) => {
  *         in: path
  *         required: true
  *         type: integer
+ *         minimum: 1
+ *         maximum: 5
  *     responses:
  *       200:
  *         description: Success
