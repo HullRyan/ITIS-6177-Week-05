@@ -143,7 +143,7 @@ app.get("/customers/:grade", (req, res) => {
 app.get("/customers/:id", (req, res) => {
 	console.log(JSON.stringify(req.params));
 	//Sanitizing/Validating input
-	if (req.params.id.length != 5) {
+	if (req.params.id.length != 6) {
 		res.status(400).send("Invalid input");
 		return;
 	}
