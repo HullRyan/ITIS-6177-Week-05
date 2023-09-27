@@ -517,7 +517,11 @@ app.patch("/customers/:id", jsonParser, (req, res) => {
 	console.log(JSON.stringify(req.body));
 	//Sanitizing/Validating input
 	if (
-		req.params.id.length != 6 
+		!req.body?.name &&
+		!req.body?.city &&
+		!req.body?.phone &&
+		req.body?.grade == undefined &&
+		(req.params.id.length != 6)
 	) {
 		res.status(400).send("Invalid input");
 		return;
@@ -532,24 +536,14 @@ app.patch("/customers/:id", jsonParser, (req, res) => {
 					conn.release();
 					return;
 				} else {
-					let updateFields = {};
-					if (req.body.name) {
-						updateFields.CUST_NAME = req.body.name;
-					}
-					if (req.body.grade !== undefined && req.body.grade >= 1 && req.body.grade <= 5) {
-						updateFields.GRADE = req.body.grade;
-					}
-					if (req.body.phone) {
-						updateFields.PHONE_NO = req.body.phone;
-					}
-					if (req.body.city) {
-						updateFields.CUST_CITY = req.body.city;
-					}
 					conn
 						.query(
-							"UPDATE customer SET ? WHERE CUST_CODE = ?",
+							"UPDATE customer SET CUST_NAME = ?, GRADE = ?, PHONE_NO = ?, CUST_CITY = ? WHERE CUST_CODE = ?",
 							[
-								updateFields,
+								req.body?.name,
+								req.body?.grade,
+								req.body?.phone,
+								req.body?.city,
 								req.params.id,
 							]
 						)
