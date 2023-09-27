@@ -211,6 +211,9 @@ app.post("/customers", jsonParser, (req, res) => {
  *     parameters:
  *       - name: id
  *         description: Customer ID
+ *         type: string
+ *         minLength: 4
+ *         maxLength: 4
  *     responses:
  *       200:
  *         description: Success
