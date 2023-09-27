@@ -521,8 +521,8 @@ app.patch("/customers/:id", jsonParser, (req, res) => {
 		!req.body.city &&
 		!req.body.phone &&
 		req.body.grade == undefined &&
-		req.params.id.length != 6 &&
-		(req.body.grade < 1 || req.body.grade > 5)
+		(req.body.grade < 1 || req.body.grade > 5) ||
+		req.params.id.length != 6 
 	) {
 		res.status(400).send("Invalid input");
 		return;
@@ -541,10 +541,10 @@ app.patch("/customers/:id", jsonParser, (req, res) => {
 						.query(
 							"UPDATE customer SET CUST_NAME = ?, GRADE = ?, PHONE_NO = ?, CUST_CITY = ? WHERE CUST_CODE = ?",
 							[
-								req.body.name,
-								req.body.grade,
-								req.body.phone,
-								req.body.city,
+								req.body?.name,
+								req.body?.grade,
+								req.body?.phone,
+								req.body?.city,
 								req.params.id,
 							]
 						)
