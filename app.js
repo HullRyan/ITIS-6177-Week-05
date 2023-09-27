@@ -385,6 +385,7 @@ app.get("/orders", (req, res) => {
  *         type: string
  *         minLength: 6
  *         maxLength: 6
+ *         example: C00001
  *     requestBody:
  *       required: true
  *       content:
