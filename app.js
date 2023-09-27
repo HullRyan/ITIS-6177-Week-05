@@ -220,11 +220,10 @@ app.post("/customers", jsonParser, (req, res) => {
 		return;
 	}
 
-	id = "C" + req.body.id;
 	// console.log(id);
 	pool.getConnection().then((conn) => {
 		conn
-			.query("SELECT * FROM customer WHERE CUST_CODE = ?", [id])
+			.query("SELECT * FROM customer WHERE CUST_CODE = ?", [req.body.id])
 			.then((rows) => {
 				if (rows.length > 0) {
 					res.status(400).send("Customer already exists");
