@@ -144,7 +144,7 @@ app.get("/customers/:id", (req, res) => {
 	console.log(JSON.stringify(req.params));
 	//Sanitizing/Validating input
 	if (req.params.id.length != 6) {
-		res.status(400).send("Invalid input");
+		res.status(400).send("Invalid Input: Id length > 6: " + req.params.id.length);
 		return;
 	}
 
