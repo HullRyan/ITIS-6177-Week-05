@@ -210,7 +210,7 @@ app.post("/customers", jsonParser, (req, res) => {
 	//Sanitizing/Validating input
 	if (
 		!req.body.id ||
-		req.body.id.length != 4 ||
+		req.body.id.length != 6 ||
 		!req.body.name ||
 		!req.body.city ||
 		!req.body.phone ||
@@ -261,8 +261,8 @@ app.post("/customers", jsonParser, (req, res) => {
  *         in: path
  *         description: Customer ID
  *         type: string
- *         minLength: 4
- *         maxLength: 4
+ *         minLength: 6
+ *         maxLength: 6
  *     responses:
  *       200:
  *         description: Success
@@ -274,6 +274,12 @@ app.post("/customers", jsonParser, (req, res) => {
  *         description: Customer does not exist
  */
 app.delete("/customers/:id", (req, res) => {
+	console.log(JSON.stringify(req.params));
+	//Sanitizing/Validating input
+	if (req.params.id.length != 6) {
+		res.status(400).send("Invalid input");
+		return;
+	}
 	pool.getConnection().then((conn) => {
 		conn
 			.query("SELECT * FROM customer WHERE CUST_CODE = ?", [req.params.id])
@@ -413,7 +419,7 @@ app.put("/customers/:id", jsonParser, (req, res) => {
 		!req.body.city ||
 		!req.body.phone ||
 		req.body.grade == undefined ||
-		req.params.id.length != 4 ||
+		req.params.id.length != 6 ||
 		req.body.grade < 1 ||
 		req.body.grade > 5
 	) {
@@ -497,7 +503,7 @@ app.patch("/customers/:id", jsonParser, (req, res) => {
 		!req.body.city ||
 		!req.body.phone ||
 		req.body.grade == undefined ||
-		req.params.id.length != 4 ||
+		req.params.id.length != 6 ||
 		req.body.grade < 1 ||
 		req.body.grade > 5
 	) {
