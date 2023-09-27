@@ -305,9 +305,6 @@ app.delete("/customers/:id", (req, res) => {
 	});
 });
 
-//put
-app
-
 /**
  * @swagger
  * /agents:
@@ -381,6 +378,11 @@ app.get("/orders", (req, res) => {
  *     parameters:
  *       - name: id
  *         description: Customer ID
+ *         in: path
+ *         required: true
+ *         type: string
+ *         minLength: 6
+ *         maxLength: 6
  *     requestBody:
  *       required: true
  *       content:
