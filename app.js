@@ -376,7 +376,7 @@ app.get("/orders", (req, res) => {
  * @swagger
  * /customers/{id}:
  *   put:
- *     description: Update a customer
+ *     description: Fully update a customer
  *     parameters:
  *       - name: id
  *         description: Customer ID
@@ -470,7 +470,7 @@ app.put("/customers/:id", jsonParser, (req, res) => {
  * @swagger
  * /customers/{id}:
  *   patch:
- *     description: Update a customer
+ *     description: Partially update a customer
  *     parameters:
  *       - name: id
  *         description: Customer ID
