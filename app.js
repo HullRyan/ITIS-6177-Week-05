@@ -516,13 +516,7 @@ app.put("/customers/:id", jsonParser, (req, res) => {
 app.patch("/customers/:id", jsonParser, (req, res) => {
 	console.log(JSON.stringify(req.body));
 	//Sanitizing/Validating input
-	if (
-		!req.body.name &&
-		!req.body.city &&
-		!req.body.phone &&
-		req.body.grade == undefined &&
-		(req.params.id.length != 6)
-	) {
+	if (req.params.id.length != 6) {
 		res.status(400).send("Invalid input");
 		return;
 	}
@@ -536,17 +530,30 @@ app.patch("/customers/:id", jsonParser, (req, res) => {
 					conn.release();
 					return;
 				} else {
+					let query = "UPDATE customer SET ";
+					let values = [];
+					if (req.body.name) {
+						query += "CUST_NAME = ?, ";
+						values.push(req.body.name);
+					}
+					if (req.body.grade != undefined) {
+						query += "GRADE = ?, ";
+						values.push(req.body.grade);
+					}
+					if (req.body.phone) {
+						query += "PHONE_NO = ?, ";
+						values.push(req.body.phone);
+					}
+					if (req.body.city) {
+						query += "CUST_CITY = ?, ";
+						values.push(req.body.city);
+					}
+					query = query.slice(0, -2); // remove the last comma and space
+					query += " WHERE CUST_CODE = ?";
+					values.push(req.params.id);
+
 					conn
-						.query(
-							"UPDATE customer SET CUST_NAME = ?, GRADE = ?, PHONE_NO = ?, CUST_CITY = ? WHERE CUST_CODE = ?",
-							[
-								req.body?.name,
-								req.body?.grade,
-								req.body?.phone,
-								req.body?.city,
-								req.params.id,
-							]
-						)
+						.query(query, values)
 						.then((rows) => {
 							res.set("Content-Type", "application/json");
 							res.json(rows);
