@@ -322,6 +322,44 @@ app.get("/orders", (req, res) => {
 });
 
 //patch
+/**
+ * @swagger
+ * /customers/{id}:
+ *   patch:
+ *     description: Update a customer
+ *     parameters:
+ *       - name: id
+ *         description: Customer ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               grade:
+ *                 type: integer
+ *               city:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *             required:
+ *               - name
+ *               - grade
+ *               - city
+ *               - phone
+ *     responses:
+ *       200:
+ *         description: Success
+ *       500:
+ *         description: Internal Server Error
+ *       400:
+ *         description: Invalid input
+ *       404:
+ *         description: Customer does not exist
+ */
 app.patch("/customers/:id", jsonParser, (req, res) => {
 	console.log(JSON.stringify(req.body));
 	//Sanitizing/Validating input
