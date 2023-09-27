@@ -259,6 +259,7 @@ app.post("/customers", jsonParser, (req, res) => {
  *     parameters:
  *       - name: id
  *         in: path
+ *         required: true
  *         description: Customer ID
  *         type: string
  *         minLength: 6
