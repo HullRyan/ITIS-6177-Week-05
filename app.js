@@ -258,6 +258,7 @@ app.post("/customers", jsonParser, (req, res) => {
  *     description: Delete a customer
  *     parameters:
  *       - name: id
+ *         in: path
  *         description: Customer ID
  *         type: string
  *         minLength: 4
