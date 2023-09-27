@@ -209,17 +209,17 @@ app.post("/customers", jsonParser, (req, res) => {
  *   delete:
  *     description: Delete a customer
  *     parameters:
- * 	 - name: id
- * 	   description: Customer ID
+ *       - name: id
+ *         description: Customer ID
  *     responses:
- * 	 200:
- * 	   description: Success
- * 	 500:
- * 	   description: Internal Server Error
- * 	 400:
- * 	   description: Invalid input
- * 	 404:
- * 	   description: Customer does not exist
+ *       200:
+ *         description: Success
+ *       500:
+ *         description: Internal Server Error
+ *       400:
+ *         description: Invalid input
+ *       404:
+ *         description: Customer does not exist
  */
 app.delete("/customers/:id", (req, res) => {
 	pool.getConnection().then((conn) => {
