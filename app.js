@@ -122,7 +122,6 @@ app.get("/customers/:grade", (req, res) => {
 });
 
 /**
-/**
  * @swagger
  * /customers:
  *   post:
@@ -136,8 +135,6 @@ app.get("/customers/:grade", (req, res) => {
  *             properties:
  *               id:
  *                 type: string
- *                 maxLength: 4
- *                 minLength: 4
  *               name:
  *                 type: string
  *               grade:
@@ -155,13 +152,6 @@ app.get("/customers/:grade", (req, res) => {
  *     responses:
  *       200:
  *         description: Success
- *         content:
- *           application/json:
- *              schema:
- *                 type: object
- *                 properties:
- * 					 id:
- * 					   type: string
  *       500:
  *         description: Internal Server Error
  *       400:
