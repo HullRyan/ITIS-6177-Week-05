@@ -237,7 +237,7 @@ app.post("/customers", jsonParser, (req, res) => {
 						)
 						.then((rows) => {
 							res.set("Content-Type", "application/json");
-							rows["id"] = id;
+							rows["id"] = req.body.id;
 							res.json(rows);
 							conn.release();
 						})
