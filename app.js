@@ -146,7 +146,9 @@ app.get("/customers/:id", (req, res) => {
 	console.log(JSON.stringify(req.params));
 	//Sanitizing/Validating input
 	if (req.params.id.length != 6) {
-		res.status(400).send("Invalid Input: Id length > 6: " + req.params.id.length);
+		res
+			.status(400)
+			.send("Invalid Input: Id length > 6: " + req.params.id.length);
 		return;
 	}
 
@@ -169,7 +171,6 @@ app.get("/customers/:id", (req, res) => {
 			throw err;
 		});
 });
-
 
 /**
  * @swagger
@@ -235,7 +236,13 @@ app.post("/customers", jsonParser, (req, res) => {
 					conn
 						.query(
 							"INSERT INTO customer (CUST_CODE, CUST_NAME, GRADE, PHONE_NO, CUST_CITY) VALUES (?, ?, ?, ?, ?)",
-							[req.body.id, req.body.name, req.body.grade, req.body.phone, req.body.city]
+							[
+								req.body.id,
+								req.body.name,
+								req.body.grade,
+								req.body.phone,
+								req.body.city,
+							]
 						)
 						.then((rows) => {
 							res.set("Content-Type", "application/json");
@@ -475,6 +482,12 @@ app.put("/customers/:id", jsonParser, (req, res) => {
  *     parameters:
  *       - name: id
  *         description: Customer ID
+ *         in: path
+ *         required: true
+ *         type: string
+ *         minLength: 6
+ *         maxLength: 6
+ *         example: C00001
  *     requestBody:
  *       required: true
  *       content:
@@ -504,13 +517,12 @@ app.patch("/customers/:id", jsonParser, (req, res) => {
 	console.log(JSON.stringify(req.body));
 	//Sanitizing/Validating input
 	if (
-		!req.body.name ||
-		!req.body.city ||
-		!req.body.phone ||
-		req.body.grade == undefined ||
-		req.params.id.length != 6 ||
-		req.body.grade < 1 ||
-		req.body.grade > 5
+		!req.body.name &&
+		!req.body.city &&
+		!req.body.phone &&
+		req.body.grade == undefined &&
+		req.params.id.length != 6 &&
+		(req.body.grade < 1 || req.body.grade > 5)
 	) {
 		res.status(400).send("Invalid input");
 		return;
