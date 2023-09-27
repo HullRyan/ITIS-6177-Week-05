@@ -517,10 +517,10 @@ app.patch("/customers/:id", jsonParser, (req, res) => {
 	console.log(JSON.stringify(req.body));
 	//Sanitizing/Validating input
 	if (
-		!req.body?.name &&
-		!req.body?.city &&
-		!req.body?.phone &&
-		req.body?.grade == undefined &&
+		!req.body.name &&
+		!req.body.city &&
+		!req.body.phone &&
+		req.body.grade == undefined &&
 		(req.params.id.length != 6)
 	) {
 		res.status(400).send("Invalid input");
