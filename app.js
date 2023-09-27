@@ -123,6 +123,54 @@ app.get("/customers/:grade", (req, res) => {
 
 /**
  * @swagger
+ * /customers/{id}:
+ *   get:
+ *     description: Get all customers by grade
+ *     parameters:
+ *       - name: id
+ *         description: id
+ *         in: path
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Success
+ *       500:
+ *         description: Internal Server Error
+ *       400:
+ *         description: Invalid input
+ */
+app.get("/customers/:id", (req, res) => {
+	console.log(JSON.stringify(req.params));
+	//Sanitizing/Validating input
+	if (req.params.id.length != 4) {
+		res.status(400).send("Invalid input");
+		return;
+	}
+
+	pool
+		.getConnection()
+		.then((conn) => {
+			conn
+				.query("SELECT * FROM customer WHERE CUST_CODE = ?", [req.params.id])
+				.then((rows) => {
+					res.set("Content-Type", "application/json");
+					res.json(rows);
+					conn.release();
+				})
+				.catch((err) => {
+					conn.release();
+					throw err;
+				});
+		})
+		.catch((err) => {
+			throw err;
+		});
+});
+
+
+/**
+ * @swagger
  * /customers:
  *   post:
  *     description: Create a new customer
